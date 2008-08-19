@@ -1,0 +1,47 @@
+Sysmon Startup Item for Darwin/Mac OS X
+
+v0.1 by Morgan Aldridge (morgant@makkintosshu.com)
+
+IMPLEMENTATION NOTES
+
+This is not implemented as a launchd item for the following two reasons:
+
+1) To support pre-Mac OS X 10.4 (Tiger) versions of Mac OS X.
+2) Sysmon (at-least as of version 0.92.2) forks itself to run as a daemon, this behavior is not supported by launchd.
+
+Sysmon should really be modified to correct its behaviour and this should be rewritten as a launchd job, but for now it'll do the job.
+
+PREREQUISITES
+
+Version 0.92.2 or later of Sysmon must be installed prior to using this Startup Item.
+
+INSTALLATION
+
+Modify the 'Sysmon' script in the 'Sysmon' folder to use the correct path to your 'sysmon.conf' file (currently set to '/etc/sysmond/sysmon.conf'). Or, alternatively, move you 'sysmon.conf' file(s) to '/etc/sysmond/sysmon.conf'.
+
+Once the Startup Item has been modified or your sysmon.conf file(s) moved, run the install.sh script, this will copy the correct files into /System/Library/StartupItems/.
+
+USAGE
+
+Restarting your machine should cause Sysmon to be automatically launched via this Startup Item.
+
+You can stop, start, or restart the service from the command line after boot by using one of the following commands (you must call this as root, so suggest the use of sudo):
+
+	/sbin/SystemStarter stop "Network Monitoring"
+	
+	/sbin/SystemStarter start "Network Monitoring"
+	
+	/sbin/SystemStarter restart "Network Monitoring"
+
+QUESTIONS AND/OR COMMENTS
+
+If you have questions, comments, bug fixes, etc., feel free to e-mail me at 
+morgant@makkintosshu.com.
+
+LICENSE
+
+It's only a Startup Item, but it's still a piece of copyrighted work. It's released under the BSD License, please read included LICENSE document.
+
+VERSION HISTORY
+
+v0.1	- Initial Release.
