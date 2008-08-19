@@ -1,6 +1,6 @@
 Sysmon Startup Item for Darwin/Mac OS X
 
-v0.1 by Morgan Aldridge (morgant@makkintosshu.com)
+v0.3 by Morgan Aldridge (morgant@makkintosshu.com)
 
 IMPLEMENTATION NOTES
 
@@ -21,6 +21,8 @@ Modify the 'Sysmon' script in the 'Sysmon' folder to use the correct path to you
 
 Once the Startup Item has been modified or your sysmon.conf file(s) moved, run the install.sh script, this will copy the correct files into
 /Library/StartupItems/.
+
+Append a "SYSMON=-YES-" or "SYSMON=-NO-" line to your /etc/hostconfig file depending on whether you do or do not, respectively, want Sysmon to launch on boot/reboot or manual call to SystemStarter. If you do not specifiy "SYSMON=-YES-" then Sysmon will not launch via the Startup Item.
 
 USAGE
 
@@ -51,3 +53,7 @@ v0.2   - 2007/02/19 - Morgan Aldridge <morgant@makkintosshu.com>
          RestartService() now does a "kill -HUP" on the process instead of
          stopping & restarting the service. install.sh now installs to
          /Library/StartupItems/ instead of /System/Library/StartupItems.
+v0.3   - 2007-05-23 - Morgan Aldridge <morgant@makkintosshu.com>
+         StartService() now checks to see if there's a "SYSMON=-YES-" line in
+         /etc/hostconfig. This enables disabling of Sysmon without deleting the
+         Startup Item.
