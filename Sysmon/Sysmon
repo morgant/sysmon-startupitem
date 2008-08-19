@@ -1,0 +1,40 @@
+#!/bin/sh
+. /etc/rc.common
+
+# 
+# Sysmon Startup Item for Darwin/Mac OS X
+# v0.1 by Morgan Aldridge (morgant@makkintosshu.com)
+#
+# This is not implemented as a launchd item for the following two reasons:
+# 
+# 1) To support pre-Mac OS X 10.4 (Tiger) versions of Mac OS X.
+# 2) Sysmon (at-least as of version 0.92.2) forks itself to run as a daemon,
+#    this behavior is not supported by launchd.
+#
+# Sysmon should really be modified to correct its behaviour and this should be
+# rewritten as a launchd job, but for now it'll do the job.
+#
+# Requirements: Version 0.92.2 or later of Sysmon must be installed prior to
+# using this Startup Item.
+#
+
+StartService()
+{
+	echo "Starting Sysmon network monitoring"
+	/usr/local/bin/sysmond -f /etc/sysmond/sysmon.conf
+}
+
+StopService()
+{
+	echo "Stopping Sysmon network monitoring"
+	kill `cat /var/run/sysmond.pid`
+}
+
+RestartService()
+{
+	echo "Restarting Sysmon network monitoring"
+	StopService
+	StartService
+}
+ 
+RunService "$1"

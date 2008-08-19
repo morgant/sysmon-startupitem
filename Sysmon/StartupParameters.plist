@@ -1,0 +1,13 @@
+{
+  Description     = "Sysmon Network Monitoring";
+  Provides        = ("Network Monitoring");
+  Requires        = ("Network","SNMP");
+  Uses            = ("Disks","Resolver");
+  OrderPreference = "Late";
+  
+  Messages =
+  {
+    start   = "Starting Sysmon Network Monitoring";
+    stop    = "Stopping Sysmon Network Monitoring";
+  };
+}
