@@ -19,7 +19,8 @@ INSTALLATION
 
 Modify the 'Sysmon' script in the 'Sysmon' folder to use the correct path to your 'sysmon.conf' file (currently set to '/etc/sysmond/sysmon.conf'). Or, alternatively, move you 'sysmon.conf' file(s) to '/etc/sysmond/sysmon.conf'.
 
-Once the Startup Item has been modified or your sysmon.conf file(s) moved, run the install.sh script, this will copy the correct files into /System/Library/StartupItems/.
+Once the Startup Item has been modified or your sysmon.conf file(s) moved, run the install.sh script, this will copy the correct files into
+/Library/StartupItems/.
 
 USAGE
 
@@ -44,4 +45,9 @@ It's only a Startup Item, but it's still a piece of copyrighted work. It's relea
 
 VERSION HISTORY
 
-v0.1	- Initial Release.
+v0.1   - 2006/07/19 - Morgan Aldridge <morgant@makkintosshu.com>
+         Initial Release.
+v0.2   - 2007/02/19 - Morgan Aldridge <morgant@makkintosshu.com>
+         RestartService() now does a "kill -HUP" on the process instead of
+         stopping & restarting the service. install.sh now installs to
+         /Library/StartupItems/ instead of /System/Library/StartupItems.

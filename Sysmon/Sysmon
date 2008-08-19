@@ -33,8 +33,7 @@ StopService()
 RestartService()
 {
 	echo "Restarting Sysmon network monitoring"
-	StopService
-	StartService
+	kill -HUP `cat /var/run/sysmond.pid`
 }
  
 RunService "$1"
