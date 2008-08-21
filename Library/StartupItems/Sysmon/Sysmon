@@ -22,7 +22,7 @@ StartService()
 {
 	if [ "${SYSMON:=-NO-}" = "-YES-" ]; then
 		echo "Starting Sysmon network monitoring"
-		/usr/local/bin/sysmond -f /etc/sysmond/sysmon.conf
+		/usr/local/bin/sysmond
 	fi
 }
 
