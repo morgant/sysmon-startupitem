@@ -24,7 +24,7 @@ if [ $os = "Darwin" ]; then
 	elif [ $darwin_version -eq 9 ]; then
 		echo "  Running Mac OS X 10.5 (Leopard)."
 		echo "Installing org.sysmon.sysmond.plist to $dst/LaunchDaemons/..."
-		install -cd -m 750 -o root -g wheel Library/LaunchDaemons/org.sysmon.sysmond.plist $dst/LaunchDaemons/
+		install -c -m 750 -o root -g wheel Library/LaunchDaemons/org.sysmon.sysmond.plist $dst/LaunchDaemons/
 		echo "  Done."
 	else
 		echo "FATAL ERROR: Not running a supported version of Darwin/Mac OS X. Please see the included README."
