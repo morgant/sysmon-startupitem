@@ -1,40 +1,43 @@
-Sysmon Startup Item for Darwin/Mac OS X
+Sysmon StartupItem for Darwin/Mac OS X
 
-v0.3 by Morgan Aldridge (morgant@makkintosshu.com)
+v0.4 by Morgan Aldridge (morgant@makkintosshu.com)
 
 IMPLEMENTATION NOTES
 
-This is not implemented as a launchd item for the following two reasons:
+The launchd plist (for Mac OS X 10.5 Leopard only) currently uses the "NetworkState" key due to poor handling of whether the network is up by sysmond itself (at least when started early in the boot process). This will need to be addresses at some point.
 
-1) To support pre-Mac OS X 10.4 (Tiger) versions of Mac OS X.
-2) Sysmon (at-least as of version 0.92.2) forks itself to run as a daemon, this behavior is not supported by launchd.
+This has the unintended side effect that if all the network links on the Darwin/Mac OS X box running sysmond go down, launchd will kill the sysmond process and not restart it until at least one network link comes back up. Of course, this resets sysmon's monitoring & uptime measurements and it cannot attempt to send emails or spawn processes. But, you're running multiple sysmond daemons on multiple hosts for redundancy, right?
 
-Sysmon should really be modified to correct its behaviour and this should be rewritten as a launchd job, but for now it'll do the job.
+Also, due to missing functionality in launchd under Mac OS X 10.4 Tiger, the launchd plist will not function and so the StartupItem is installed on Tiger as well as Panther.
 
 PREREQUISITES
 
-Version 0.92.2 or later of Sysmon must be installed prior to using this Startup Item.
+Version 0.92.2 or later of Sysmon must be installed prior to using either this StartupItem or launchd job, preferably in /usr/local/. Your main sysmon.conf file should live in the default location (/usr/local/etc/sysmon.conf) unless you intend to modify the launchd plist or StartupItem.
 
 INSTALLATION
 
-Modify the 'Sysmon' script in the 'Sysmon' folder to use the correct path to your 'sysmon.conf' file (currently set to '/etc/sysmond/sysmon.conf'). Or, alternatively, move you 'sysmon.conf' file(s) to '/etc/sysmond/sysmon.conf'.
+Run the install.sh script. It will determine whether it's appropriate to install the StartupItem or the launchd plist and will will copy them into their correct locations in /Library/.
 
-Once the Startup Item has been modified or your sysmon.conf file(s) moved, run the install.sh script, this will copy the correct files into
-/Library/StartupItems/.
-
-Append a "SYSMON=-YES-" or "SYSMON=-NO-" line to your /etc/hostconfig file depending on whether you do or do not, respectively, want Sysmon to launch on boot/reboot or manual call to SystemStarter. If you do not specifiy "SYSMON=-YES-" then Sysmon will not launch via the Startup Item.
+If you're running Mac OS X 10.3 Panther or Mac OS X 10.4 Tiger, you'll need to append a "SYSMON=-YES-" or "SYSMON=-NO-" line to your /etc/hostconfig file depending on whether you do or do not, respectively, want Sysmon to launch on boot/reboot or manual call to SystemStarter. If you do not specifiy "SYSMON=-YES-" then Sysmon will not launch via the Startup Item.
 
 USAGE
 
-Restarting your machine should cause Sysmon to be automatically launched via this Startup Item.
+Restarting your machine should cause Sysmon to be automatically launched via this StartupItem or launchd plist (whichever was appropriately installed).
 
-You can stop, start, or restart the service from the command line after boot by using one of the following commands (you must call this as root, so suggest the use of sudo):
+Under Panther or Tiger, you can stop, start, or restart the service from the command line after boot by using one of the following commands (you must call this as root, so I suggest the use of sudo):
 
 	/sbin/SystemStarter stop "Network Monitoring"
 	
 	/sbin/SystemStarter start "Network Monitoring"
 	
 	/sbin/SystemStarter restart "Network Monitoring"
+
+Under Leopard, you can stop or start the service from the command line after boot by using one of the following commands (you must call this as root, so I suggest the use of sudo):
+
+	/bin/launchctl load /Library/LaunchDaemons/org.sysmon.sysmond.plist
+	
+	/bin/launchctl unload /Library/LaunchDaemons/org.sysmon.sysmond.plist
+
 
 QUESTIONS AND/OR COMMENTS
 
@@ -43,7 +46,7 @@ morgant@makkintosshu.com.
 
 LICENSE
 
-It's only a Startup Item, but it's still a piece of copyrighted work. It's released under the BSD License, please read included LICENSE document.
+It's only a StartupItem & launchd plist, but it's still a piece of copyrighted work. It's released under the BSD License, please read included LICENSE document.
 
 VERSION HISTORY
 
@@ -57,3 +60,6 @@ v0.3   - 2007-05-23 - Morgan Aldridge <morgant@makkintosshu.com>
          StartService() now checks to see if there's a "SYSMON=-YES-" line in
          /etc/hostconfig. This enables disabling of Sysmon without deleting the
          Startup Item.
+v0.4   - 2008-08-20 - Morgan Aldridge <morgant@makkintosshu.com>
+         Now installs either a launchd job under Leopard or the StartupItem
+         under Panther/Tiger. Improved install.sh script & documentation.
